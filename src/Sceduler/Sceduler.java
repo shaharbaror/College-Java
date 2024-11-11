@@ -21,7 +21,7 @@ public class Sceduler {
     }
 
     public synchronized String getMessage(String threadId) {
-        while (!messageQueues.containsKey(threadId) || messageQueues.get(threadId).isEmpty()) {
+        while (!messageQueues.containsKey(threadId) || messageQueues.get(threadId).isEmpty()) { // [1234,....] ["hello",...]
             try {
                 wait();
             } catch (InterruptedException e) {
