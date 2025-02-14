@@ -97,4 +97,13 @@ public class Board {
         }
         return false;
     }
+    public String getCell(int x, int y) {
+        if (board[x][y] == 0) {
+            return "";
+        } else if (board[x][y] == 1) {
+            return "X";
+        } else {
+            return "O";
+        }
+    }
 }

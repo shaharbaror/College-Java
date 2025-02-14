@@ -184,6 +184,11 @@ public class Client2 {
                     is_connected = false;
                     break;
                 }
+                if (message.equals("room")) {
+                    System.out.println("Enter the room name: ");
+                    String roomName = scanner.nextLine();
+                    out.println(roomName);
+                }
                 response = in.readLine();
                 System.out.println(response);
 

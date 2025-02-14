@@ -1,8 +1,11 @@
 package MulTic;
 
+import Sceduler.Main;
+
 import java.io.*;
 import java.net.*;
 import java.util.*;
+import javafx.application.Application;
 
 public class Client {
     private static Socket client;
@@ -162,6 +165,13 @@ public class Client {
         }
     }
 
+    private static void ClientUI() {
+        Board board = new Board();
+        MainApp.setBoard(board.toString(), 1);
+        Application.launch(MainApp.class, (String[]) null);
+    }
+
+
     public static void main(String[] args) {
         String message = null;
         String response = null;
@@ -170,8 +180,8 @@ public class Client {
             in = new BufferedReader(new InputStreamReader(client.getInputStream()));
             out = new PrintWriter(client.getOutputStream(), true);
             is_connected = true;
-//            Thread messageThread = new Thread(() -> getMessages());
-//            messageThread.start();
+            Thread UIThread = new Thread(() -> ClientUI());
+            UIThread.start();
 
             while (is_connected) {
                 // get input from console
@@ -182,15 +192,19 @@ public class Client {
                     is_connected = false;
                     break;
                 }
+                if (message.equals("room")) {
+                    System.out.println("Enter the room name: ");
+                    String roomName = scanner.nextLine();
+                    out.println(roomName);
+                }
                 response = in.readLine();
                 System.out.println(response);
-
-//                messageThread.join();
-                break;
-
             }
+            UIThread.join();
         } catch (IOException e) {
             e.printStackTrace();
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
         }
         System.out.println(message);
         System.out.println("this is:" + response.split(" ")[0]);
