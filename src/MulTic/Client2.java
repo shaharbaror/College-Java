@@ -16,11 +16,15 @@ public class Client2 {
 
     private static void connectToClient(String clientIP) {
         try {
+            System.out.println("Got here witrh" + clientIP);
             // change the connection to the opponent
-            client = new Socket(clientIP, 1235);
+            client = new Socket(clientIP, 1236);
+            System.out.println("Got here witrhlfkjads;fjdsaf;lkdsajf;lkdsajf;lkdsfj;lkjesa;lkf " + clientIP);
             in = new BufferedReader(new InputStreamReader(client.getInputStream()));
             out = new PrintWriter(client.getOutputStream(), true);
             System.out.println("Connected to the opponent");
+
+
 
             /// now its time to start the game!
             board = new Board();
@@ -31,6 +35,7 @@ public class Client2 {
                 String b = in.readLine();
                 board.setBoard(b);
                 board.printBoard();
+
                 do {
                     String newBoard = in.readLine();
                     board.setBoard(newBoard);

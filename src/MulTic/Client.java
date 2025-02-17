@@ -34,6 +34,7 @@ public class Client {
                 String b = in.readLine();
                 board.setBoard(b);
                 board.printBoard();
+                System.out.println(board.playerRn + "'s turn: ");
                 do {
                     String newBoard = in.readLine();
                     board.setBoard(newBoard);
@@ -82,14 +83,13 @@ public class Client {
 
     private static void becomeTheServer() {
         try {
-            ServerSocket server = new ServerSocket(1235);
+            ServerSocket server = new ServerSocket(1236);
             Socket client = server.accept();
             in = new BufferedReader(new InputStreamReader(client.getInputStream()));
             out = new PrintWriter(client.getOutputStream(), true);
             System.out.println("Connected to the opponent");
             /// now its time to start the game!
             board = new Board();
-            // send the board to the client
 
 
             player = 0;
@@ -165,12 +165,6 @@ public class Client {
         }
     }
 
-    private static void ClientUI() {
-        Board board = new Board();
-        MainApp.setBoard(board.toString(), 1);
-        Application.launch(MainApp.class, (String[]) null);
-    }
-
 
     public static void main(String[] args) {
         String message = null;
@@ -180,10 +174,10 @@ public class Client {
             in = new BufferedReader(new InputStreamReader(client.getInputStream()));
             out = new PrintWriter(client.getOutputStream(), true);
             is_connected = true;
-            Thread UIThread = new Thread(() -> ClientUI());
-            UIThread.start();
+
 
             while (is_connected) {
+                System.out.println("Enter 'quickplay' to play with a random player or 'room' to create a room: ");
                 // get input from console
                 message = scanner.nextLine();
 
@@ -196,15 +190,19 @@ public class Client {
                     System.out.println("Enter the room name: ");
                     String roomName = scanner.nextLine();
                     out.println(roomName);
+                    break;
+                }
+                else if (message.equals("quickplay")) {
+                    response = in.readLine();
+                    System.out.println(response);
+                    break;
                 }
                 response = in.readLine();
                 System.out.println(response);
             }
-            UIThread.join();
+
         } catch (IOException e) {
             e.printStackTrace();
-        } catch (InterruptedException e) {
-            throw new RuntimeException(e);
         }
         System.out.println(message);
         System.out.println("this is:" + response.split(" ")[0]);

@@ -106,4 +106,8 @@ public class Board {
             return "O";
         }
     }
+
+    public int[][] getBoard() {
+        return board;
+    }
 }
